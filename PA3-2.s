@@ -1,3 +1,6 @@
+@Mario Saiz
+@10/12/18
+
 @Vending machine code
 
     .global main
@@ -33,27 +36,24 @@ main:
 
     @Your modifications will begin at this point
 
-    CMP R1, #1       @Check for "peanuts"
-    BEQ _peanut      @If user entered 1 goto _peanuts
-    CMP R1, #2       @Check for "chocolate"
-    BEQ _choc        @If user entered 2 goto _choc
+@peanut
+    CMP R1, #1        @Check for "peanuts"
+    MOVEQ R3, #75       @Move 75 cents into R3
+@chocolate
+    CMP R1, #2        @Check for "chocolate"
+    MOVEQ R3, #125      @Move 125 cents into R3
+@pretzel
     CMP R1, #3       @Check for "pretzels"
-    BEQ _pretzel     @If user entered 3 goto _pretzel
-    LDR R0, =msg7    @If we get here user entered
+    MOVEQ R3, #90      @Move 90 cents into R3
+
+@Illegal
+    CMP R1, #3
+    LDRGT R0, =msg7  @If we get here user entered
                      @an illegal selection so print
                      @error message and terminate
-    BL printf
-    MOV R7, #1
-    SWI #0           @Terminate, error condition
-_peanut:
-    MOV R3, #75      @Move 75 cents into R3
-    BAL _compute
-_choc:
-    MOV R3, #125     @Move 125 cents into R3
-    BAL _compute
-_pretzel:
-    MOV R3, #90      @Move 90 cents into R3
-_compute:
+    BLGT printf
+
+@Compute
     LDR R4, =quantity @Get address of var quantity
     LDR R4, [R4]      @Value of quantity now in R4
     MUL R1, R3, R4    @Multiply number of cents times quantity
@@ -62,6 +62,12 @@ _compute:
     BL printf
     MOV R7, #1        @Normal exit
     SWI #0
+
+
+@This program should display a menu, making the user choose between 3 options
+@Then it will prompt them to input an amount they want
+@It will then compute the amounts and display how much it costs, depending on the item, cost, and amount
+@I am also making this program display an error message if one of the choices (#1-#3) aren't in that range.
 
 .data
 select: .word 0
