@@ -47,7 +47,7 @@ main:
     MOVEQ R3, #90      @Move 90 cents into R3
 
 @Illegal
-    CMP R1, #3
+    CMP R1, #3       @Check if input is 3, it being the highest number you can have
     LDRGT R0, =msg7  @If we get here user entered
                      @an illegal selection so print
                      @error message and terminate
